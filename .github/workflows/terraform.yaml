@@ -53,6 +53,7 @@ jobs:
       - name: Export Terraform environment variables
         run: |
           export $(cat terraform.env)
+          env | grep AWS
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
