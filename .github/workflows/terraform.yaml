@@ -50,6 +50,11 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Export variables
+        run: |
+             echo "AWS_ACCESS_KEY: $AWS_ACCESS_KEY"
+             echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+
       - name: Terraform Plan
         run: terraform plan -var-file=environments/${{ github.event.inputs.environment }}/values.tfvars -out=tfplan
 
