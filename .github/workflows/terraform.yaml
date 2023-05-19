@@ -62,7 +62,7 @@ jobs:
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         uses: trstringer/manual-approval@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          secret: ${{ github.TOKEN }}
           message: "A Terraform deployment is pending for review on the ${GITHUB_REF} branch. Please review the changes and provide approval to proceed."
           approvers: 'darey-io'
       - name: Terraform Apply
