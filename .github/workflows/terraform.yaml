@@ -45,9 +45,9 @@ jobs:
 
       - name: Set Terraform environment variables
         run: |
-          echo "AWS_REGION=${{ secrets.prod.AWS_REGION }}" > terraform.env
-          echo "AWS_ACCESS_KEY=${{ secrets.prod.AWS_ACCESS_KEY }}" >> terraform.env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.prod.AWS_ACCESS_KEY_ID }}" >> terraform.env
+          echo "AWS_REGION=${{ secrets.Prod.AWS_REGION }}" > terraform.env
+          echo "AWS_ACCESS_KEY=${{ secrets.Prod.AWS_ACCESS_KEY }}" >> terraform.env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.Prod.AWS_ACCESS_KEY_ID }}" >> terraform.env
           echo "TF_VERSION=${{ env.TF_VERSION || '1.4.0' }}" >> terraform.env
           echo $AWS_ACCESS_KEY
 
