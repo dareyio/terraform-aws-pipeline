@@ -16,26 +16,26 @@ on:
         # Add other environment options as desired
 
 jobs:
-  # validate:
-  #   runs-on: ubuntu-latest
+  validate:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Setup Terraform
-  #       uses: hashicorp/setup-terraform@v1
-  #       with:
-  #         terraform_version: ${{ env.TF_VERSION }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
 
-  #     - name: Terraform Init
-  #       run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-  #     - name: Terraform Validate
-  #       run: terraform validate
+      - name: Terraform Validate
+        run: terraform validate
 
   deploy:
-    # needs: validate
+    needs: validate
     runs-on: ubuntu-latest
 
     steps:
@@ -64,7 +64,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           message: "A Terraform deployment is pending for review on the ${GITHUB_REF} branch. Please review the changes and provide approval to proceed."
-
+          approvers: 'darey-io'
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' && github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
         run: terraform apply tfplan
