@@ -63,13 +63,7 @@ jobs:
 
       - name: Manual Approval
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        uses: repo-sync/prompt-action@v2
-        with:
-          title: "Terraform Deployment Approval"
-          body: |
-            A Terraform deployment is pending for review on the ${GITHUB_REF} branch.
-            Please review the changes and provide approval to proceed.
-          confirm_comment: "terraform apply tfplan"
+        uses: env-cli/wait-for-approval@v1
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' && github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
