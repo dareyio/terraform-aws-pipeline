@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "darey-github-terraform-state"
+    bucket = "darey-liveclass-k8s-terraform-state"
     key    = "terraform.tfstate"
     region = "eu-west-2"
   }
