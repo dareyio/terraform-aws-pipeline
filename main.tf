@@ -14,7 +14,7 @@ data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
 
 locals {
-  name            = "ex-${replace(basename(path.cwd), "_", "-")}"
+  name            = "darey-liveclass-cluster"
   cluster_version = "1.24"
   region          = "eu-west-2"
 
@@ -22,9 +22,7 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Example    = local.name
-    GithubRepo = "terraform-aws-eks"
-    GithubOrg  = "terraform-aws-modules"
+    Name    = local.name
   }
 }
 
@@ -40,7 +38,7 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   # IPV6
-  cluster_ip_family = "ipv6"
+  cluster_ip_family = "ipv4"
 
   # We are using the IRSA created below for permissions
   # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
@@ -48,7 +46,7 @@ module "eks" {
   # the VPC CNI fails to assign IPs and nodes cannot join the cluster
   # See https://github.com/aws/containers-roadmap/issues/1666 for more context
   # TODO - remove this policy once AWS releases a managed version similar to AmazonEKS_CNI_Policy (IPv4)
-  create_cni_ipv6_iam_policy = true
+  create_cni_ipv6_iam_policy = false
 
   cluster_addons = {
     coredns = {
@@ -79,7 +77,7 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
-    instance_types = ["m6i.large", "m5.large", "m5n.large", "m5zn.large"]
+    instance_types = ["m6i.large", "m5.large"]
 
     # We are using the IRSA created below for permissions
     # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
@@ -198,7 +196,7 @@ module "eks" {
 
       capacity_type        = "SPOT"
       force_update_version = true
-      instance_types       = ["m6i.large", "m5.large", "m5n.large", "m5zn.large"]
+      instance_types       = ["m6i.large", "m5.large"]
       labels = {
         GithubRepo = "terraform-aws-eks"
         GithubOrg  = "terraform-aws-modules"
@@ -261,7 +259,7 @@ module "eks" {
         min_size     = 2
         max_size     = "-1" # Retains current max size
         desired_size = 2
-        start_time   = "2023-05-10T00:00:00Z" # Updated start time to May 10, 2023. Ensure to adjust to a time in the future
+        start_time   = "2023-05-28T00:00:00Z" # Updated start time to May 28, 2023. Ensure to adjust to a time in the future
         end_time     = "2024-03-05T00:00:00Z"
         timezone     = "Etc/GMT+0"
         recurrence   = "0 0 * * *"
@@ -270,7 +268,7 @@ module "eks" {
         min_size     = 0
         max_size     = "-1" # Retains current max size
         desired_size = 0
-        start_time   = "2023-05-11T12:00:00Z" # Updated start time to May 11, 2023. Ensure to adjust to a time in the future
+        start_time   = "2023-05-28T12:00:00Z" # Updated start time to May 128, 2023. Ensure to adjust to a time in the future
         end_time     = "2024-03-05T12:00:00Z"
         timezone     = "Etc/GMT+0"
         recurrence   = "0 12 * * *"
@@ -292,7 +290,7 @@ module "eks" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -302,13 +300,13 @@ module "vpc" {
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
-  enable_ipv6                     = true
-  assign_ipv6_address_on_creation = true
+  enable_ipv6                     = false
+  #assign_ipv6_address_on_creation = false
   create_egress_only_igw          = true
 
-  public_subnet_ipv6_prefixes  = [0, 1, 2]
-  private_subnet_ipv6_prefixes = [3, 4, 5]
-  intra_subnet_ipv6_prefixes   = [6, 7, 8]
+  # public_subnet_ipv6_prefixes  = [0, 1, 2]
+  # private_subnet_ipv6_prefixes = [3, 4, 5]
+  # intra_subnet_ipv6_prefixes   = [6, 7, 8]
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
@@ -335,7 +333,7 @@ module "vpc_cni_irsa" {
 
   role_name_prefix      = "VPC-CNI-IRSA"
   attach_vpc_cni_policy = true
-  vpc_cni_enable_ipv6   = true
+  vpc_cni_enable_ipv6   = false
 
   oidc_providers = {
     main = {
