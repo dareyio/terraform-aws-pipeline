@@ -49,24 +49,24 @@ pipeline {
             }
         }
 
-        stage('Terraform Apply') {
-            when {
-                expression { env.BRANCH_NAME == 'main' }
-                expression { currentBuild.rawBuild.getCause(hudson.model.Cause$UserIdCause) != null }
-            }
-            steps {
-                script {
-                    // Ask for manual confirmation before applying changes
-                    input message: 'Do you want to apply changes?', ok: 'Yes'
+        // stage('Terraform Apply') {
+        //     when {
+        //         expression { env.BRANCH_NAME == 'main' }
+        //         expression { currentBuild.rawBuild.getCause(hudson.model.Cause$UserIdCause) != null }
+        //     }
+        //     steps {
+        //         script {
+        //             // Ask for manual confirmation before applying changes
+        //             input message: 'Do you want to apply changes?', ok: 'Yes'
 
-                    // Use AWS credentials in Terraform apply
-                    withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                        sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
-                        sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
-                        sh 'terraform plan tfplan'
-                    }
-                }
-            }
-        }
+        //             // Use AWS credentials in Terraform apply
+        //             withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+        //                 sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
+        //                 sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
+        //                 sh 'terraform plan tfplan'
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
