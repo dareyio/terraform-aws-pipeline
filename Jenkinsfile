@@ -16,38 +16,38 @@ pipeline {
             }
         }
 
-        // stage('Debug') {
-        //     steps {
-        //         script {
-        //             withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-        //                 echo "AWS_ACCESS_KEY_ID: ${env.AWS_ACCESS_KEY_ID}"
-        //                 echo "AWS_SECRET_ACCESS_KEY: ${env.AWS_SECRET_ACCESS_KEY}"
-
-        //                 sh 'terraform init'
-        //                 sh 'terraform plan -out=tfplan'
-        //             }
-        //         }
-        //     }
-        // }
-
-        stage('Terraform Plan') {
-            when {
-                expression { true }
-            }
+        stage('Debug') {
             steps {
                 script {
-                    sh 'terraform --version'
-                    sh 'terraform init'
-
-                    // Use AWS credentials in Terraform planning
                     withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                        sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
-                        sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
+                        echo "AWS_ACCESS_KEY_ID: ${env.AWS_ACCESS_KEY_ID}"
+                        echo "AWS_SECRET_ACCESS_KEY: ${env.AWS_SECRET_ACCESS_KEY}"
+
+                        sh 'terraform init'
                         sh 'terraform plan -out=tfplan'
                     }
                 }
             }
         }
+
+        // stage('Terraform Plan') {
+        //     when {
+        //         expression { true }
+        //     }
+        //     steps {
+        //         script {
+        //             sh 'terraform --version'
+        //             sh 'terraform init'
+
+        //             // Use AWS credentials in Terraform planning
+        //             withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+        //                 sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
+        //                 sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
+        //                 sh 'terraform plan -out=tfplan'
+        //             }
+        //         }
+        //     }
+        // }
 
         // stage('Terraform Apply') {
         //     when {
