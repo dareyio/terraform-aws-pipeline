@@ -24,7 +24,11 @@ pipeline {
                 script {
                     sh 'terraform --version'
                     sh 'terraform init'
-                    sh 'terraform plan -out=tfplan'
+
+                    // Use AWS credentials in Terraform planning
+                    withCredentials([aws(credentialsId: 'Your_AWS_Credentials_ID', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh 'terraform plan -out=tfplan'
+                    }
                 }
             }
         }
@@ -38,7 +42,11 @@ pipeline {
                 script {
                     // Ask for manual confirmation before applying changes
                     input message: 'Do you want to apply changes?', ok: 'Yes'
-                    sh 'terraform apply tfplan'
+
+                    // Use AWS credentials in Terraform apply
+                    withCredentials([aws(credentialsId: 'Your_AWS_Credentials_ID', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh 'terraform plan tfplan'
+                    }
                 }
             }
         }
