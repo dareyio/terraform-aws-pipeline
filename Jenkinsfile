@@ -41,6 +41,8 @@ pipeline {
 
                     // Use AWS credentials in Terraform planning
                     withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
+                        sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
                         sh 'terraform plan -out=tfplan'
                     }
                 }
@@ -59,6 +61,8 @@ pipeline {
 
                     // Use AWS credentials in Terraform apply
                     withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
+                        sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
                         sh 'terraform plan tfplan'
                     }
                 }
