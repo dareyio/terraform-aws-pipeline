@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     sh 'terraform --version'
-                    sh 'terraform init -backend-config="backend.tfvars"'
+                    sh 'terraform init'
                     sh 'terraform plan -out=tfplan'
                 }
             }
