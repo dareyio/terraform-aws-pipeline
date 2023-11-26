@@ -19,7 +19,7 @@ pipeline {
         stage('Debug') {
             steps {
                 script {
-                    withCredentials([aws(credentialsId: 'Your_AWS_Credentials_ID', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         echo "AWS_ACCESS_KEY_ID: ${env.AWS_ACCESS_KEY_ID}"
                         echo "AWS_SECRET_ACCESS_KEY: ${env.AWS_SECRET_ACCESS_KEY}"
 
