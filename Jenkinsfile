@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        TF_CLI_ARGS = '-no-color'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -32,7 +36,8 @@ pipeline {
             }
             steps {
                 script {
-                    input 'Do you want to apply changes?'
+                    // Ask for manual confirmation before applying changes
+                    input message: 'Do you want to apply changes?', ok: 'Yes'
                     sh 'terraform apply tfplan'
                 }
             }
