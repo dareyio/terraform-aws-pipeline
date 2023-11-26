@@ -18,7 +18,7 @@ pipeline {
 
         stage('Terraform Plan') {
             when {
-                expression { env.BRANCH_NAME != 'main' }
+                expression { true }
             }
             steps {
                 script {
