@@ -1,16 +1,52 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Run Shell Command') {
-            steps {
-            // Print some debugging information
-            echo 'Current workspace: ' + pwd()
-            echo 'Contents of the workspace: '
-            sh 'ls -la'
+    environment {
+        TF_CLI_ARGS = '-no-color'
+    }
 
-            // Run the original shell command
-            sh 'echo "Hello, Jenkins!"'
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    checkout scm
+                    sh 'ls -la'
+                    sh 'pwd'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        echo "AWS_ACCESS_KEY_ID: ${env.AWS_ACCESS_KEY_ID}"
+                        echo "AWS_SECRET_ACCESS_KEY: ${env.AWS_SECRET_ACCESS_KEY}"
+
+                        sh 'terraform init'
+                        sh 'terraform plan -out=tfplan'
+                    }
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            when {
+                expression { env.BRANCH_NAME == 'main' }
+                expression { currentBuild.rawBuild.getCause(hudson.model.Cause$UserIdCause) != null }
+            }
+            steps {
+                script {
+        //             // Ask for manual confirmation before applying changes
+                    input message: 'Do you want to apply changes?', ok: 'Yes'
+                    withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        echo "AWS_ACCESS_KEY_ID: ${env.AWS_ACCESS_KEY_ID}"
+                        echo "AWS_SECRET_ACCESS_KEY: ${env.AWS_SECRET_ACCESS_KEY}"
+
+                        sh 'terraform init'
+                        sh 'terraform plan -out=tfplan'
+                    }
+                }
             }
         }
     }
