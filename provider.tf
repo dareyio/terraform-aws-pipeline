@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "cicd-bucket-ada"
-    key    = "terraform.tfstate"
+    key    = "global/s3/terraform.tfstate"
     region = "eu-west-2"
   }
 }

@@ -22,7 +22,7 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Name    = local.name
+    Name = local.name
   }
 }
 
@@ -31,8 +31,8 @@ locals {
 ################################################################################
 
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
-  version = "~> 19.0"
+  source                         = "terraform-aws-modules/eks/aws"
+  version                        = "~> 19.0"
   cluster_name                   = local.name
   cluster_version                = local.cluster_version
   cluster_endpoint_public_access = true
@@ -254,26 +254,26 @@ module "eks" {
         additional                         = aws_iam_policy.node_additional.arn
       }
 
-    schedules = {
-    scale-up = {
-        min_size     = 2
-        max_size     = "-1" # Retains current max size
-        desired_size = 2
-        start_time   = "2023-05-28T00:00:00Z" # Updated start time to May 28, 2023. Ensure to adjust to a time in the future
-        end_time     = "2024-03-05T00:00:00Z"
-        timezone     = "Etc/GMT+0"
-        recurrence   = "0 0 * * *"
-    },
-    scale-down = {
-        min_size     = 0
-        max_size     = "-1" # Retains current max size
-        desired_size = 0
-        start_time   = "2023-05-28T12:00:00Z" # Updated start time to May 128, 2023. Ensure to adjust to a time in the future
-        end_time     = "2024-03-05T12:00:00Z"
-        timezone     = "Etc/GMT+0"
-        recurrence   = "0 12 * * *"
-    }
-    }
+      schedules = {
+        scale-up = {
+          min_size     = 2
+          max_size     = "-1" # Retains current max size
+          desired_size = 2
+          start_time   = "2023-05-28T00:00:00Z" # Updated start time to May 28, 2023. Ensure to adjust to a time in the future
+          end_time     = "2024-03-05T00:00:00Z"
+          timezone     = "Etc/GMT+0"
+          recurrence   = "0 0 * * *"
+        },
+        scale-down = {
+          min_size     = 0
+          max_size     = "-1" # Retains current max size
+          desired_size = 0
+          start_time   = "2023-05-28T12:00:00Z" # Updated start time to May 128, 2023. Ensure to adjust to a time in the future
+          end_time     = "2024-03-05T12:00:00Z"
+          timezone     = "Etc/GMT+0"
+          recurrence   = "0 12 * * *"
+        }
+      }
 
       tags = {
         ExtraTag = "EKS managed node group complete example"
@@ -300,9 +300,9 @@ module "vpc" {
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
-  enable_ipv6                     = false
+  enable_ipv6 = false
   #assign_ipv6_address_on_creation = false
-  create_egress_only_igw          = true
+  create_egress_only_igw = true
 
   # public_subnet_ipv6_prefixes  = [0, 1, 2]
   # private_subnet_ipv6_prefixes = [3, 4, 5]
