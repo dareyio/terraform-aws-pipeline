@@ -36,7 +36,7 @@ pipeline {
                     input message: 'Do you want to apply changes?', ok: 'Yes'
                     withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh 'terraform init'
-                        sh 'terraform aply -out=tfplan'
+                        sh 'terraform apply -out=tfplan'
                     }
                 }
             }
