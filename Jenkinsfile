@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                         // Ask for manual confirmation before applying changes
-                          input message: 'Do you really want to destroy all resources?', yes: 'yes'
+                          input message: 'Do you really want to destroy all resources?', ok: 'yes'
                           withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                           sh 'terraform init'
                           sh 'terraform destroy'
