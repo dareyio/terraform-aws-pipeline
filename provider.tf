@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "tyla-cicd"
+    bucket = "tyla-truth"
     key    = "terraform.tfstate"
     region = "eu-west-2"
   }
