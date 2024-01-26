@@ -1,13 +1,9 @@
 name: Docker Deployment
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment for deployment'
-        required: true
-        default: 'dev'
-        # Add other environment options as desired
+  push:
+    branches:
+    - main
 
 jobs:
   validate:
