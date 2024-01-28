@@ -1,11 +1,12 @@
 provider "aws" {
-  region = local.region
+  region = default
 }
+
+
 
 terraform {
   backend "s3" {
-    bucket = "busipieterson-cicd-pipeline"
-    key    = "terraform.tfstate"
-    region = "eu-west-2"
+    bucket = "busi-dev-terraform-bucket-new"
+    #key    = "terraform.tfstate"
   }
 }
