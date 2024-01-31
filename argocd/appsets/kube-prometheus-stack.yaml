@@ -1,25 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-state-metrics
+  name: kube-prometheus-stack
   namespace: argocd
 spec:
   project: default
   sources:
-  - repoURL: 'https://charts.bitnami.com/bitnami'
-    chart: kube-state-metrics
-    targetRevision: 3.11.3
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: kube-prometheus-stack
+    targetRevision: 56.3.0
+    helm:
+      valueFiles:
+      - $values/argocd/helm/values/kube-state-metrics.yaml
   - repoURL: 'git@github.com:dareyio/terraform-aws-pipeline.git'
+    path: terraform-aws-pipeline/argocd/helm/values
     targetRevision: main
     ref: values
-
-  #   chart: kube-state-metrics
-  #   repoURL: https://charts.bitnami.com/bitnami
-  #   targetRevision: 3.11.3
-  #   helm:
-  #     releaseName: kube-state-metrics
-  #     valueFiles:
-  #     - values-production.yaml
-  # destination:
-  #   server: "https://kubernetes.default.svc"
-  #   namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=true
+      - ServerSideApply=true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: monitoring
