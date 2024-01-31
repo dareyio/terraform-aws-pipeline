@@ -1,17 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: relax-sound
+  name: gitlab
   namespace: argocd
 spec:
   project: default
   sources:
-  - repoURL: 'https://charts.gabe565.com'
-    chart: relax-sounds
-    targetRevision: 1.0.0
+  - repoURL: 'http://charts.gitlab.io'
+    chart: gitlab
+    targetRevision: 7.8.1
     helm:
       valueFiles:
-      - $values/argocd/helm/values/relax-sounds-values.yaml
+      - $values/argocd/helm/values/gitlab-values.yaml
+
   - repoURL: 'git@github.com:dareyio/terraform-aws-pipeline.git'
     targetRevision: main
     ref: values
