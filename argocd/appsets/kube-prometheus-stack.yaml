@@ -13,7 +13,7 @@ spec:
       valueFiles:
       - $values/argocd/helm/values/kube-state-metrics.yaml
   - repoURL: 'git@github.com:dareyio/terraform-aws-pipeline.git'
-    path: terraform-aws-pipeline/argocd/helm/values
+    path: argocd/helm/values
     targetRevision: main
     ref: values
   syncPolicy:
