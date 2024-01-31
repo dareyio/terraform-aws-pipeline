@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: app-of-apps
+spec:
+  destination:
+    server: https://8163BB1F9F0C9E9CA97578A675922B13.yl4.eu-west-2.eks.amazonaws.com
+    namespace: argocd
+  project: default
+  source:
+    path: appsets
+    repoURL: "https://gitlab.com/dareyio-live/devops/gitops.git"
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
