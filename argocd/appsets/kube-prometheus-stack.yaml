@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-state-metrics
+  namespace: argocd
+spec:
+  project: default
+  sources:
+  - repoURL: 'https://charts.bitnami.com/bitnami'
+    chart: kube-state-metrics
+    targetRevision: 3.11.3
+  - repoURL: 'git@github.com:dareyio/terraform-aws-pipeline.git'
+    targetRevision: main
+    ref: values
+
+  #   chart: kube-state-metrics
+  #   repoURL: https://charts.bitnami.com/bitnami
+  #   targetRevision: 3.11.3
+  #   helm:
+  #     releaseName: kube-state-metrics
+  #     valueFiles:
+  #     - values-production.yaml
+  # destination:
+  #   server: "https://kubernetes.default.svc"
+  #   namespace: monitoring
