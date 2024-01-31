@@ -11,9 +11,8 @@ spec:
     targetRevision: 56.3.0
     helm:
       valueFiles:
-      - $values/argocd/helm/values/kube-state-metrics.yaml
+      - $values/argocd/helm/values/kube-prometheus-stack-values.yaml
   - repoURL: 'git@github.com:dareyio/terraform-aws-pipeline.git'
-    path: argocd/helm/values
     targetRevision: main
     ref: values
   syncPolicy:
