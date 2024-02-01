@@ -452,3 +452,4 @@ data "aws_ami" "eks_default_bottlerocket" {
     values = ["bottlerocket-aws-k8s-${local.cluster_version}-x86_64-*"]
   }
 }
+
