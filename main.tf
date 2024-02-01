@@ -14,7 +14,7 @@ data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
 
 locals {
-  name            = "busi-liveclass-cluster"
+  name            = "darey-liveclass-cluster"
   cluster_version = "1.24"
   region          = "us-east-2"
 
