@@ -453,4 +453,3 @@ data "aws_ami" "eks_default_bottlerocket" {
   }
 }
 
-
