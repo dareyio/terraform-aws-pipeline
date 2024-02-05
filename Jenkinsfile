@@ -57,15 +57,16 @@ pipeline {
 
     post {
         always {
-            stage('Cleanup') {
-                steps {
-                    script {
-                        echo 'Performing cleanup...'
-                        // Add cleanup commands here
-                    }
+            echo 'Performing cleanup...'
+            // Add cleanup commands here
+            script {
+                sh 'rm -rf tfplan' // Example cleanup command to remove plan file
+            }
+            echo 'Cleanup completed.'
+
                 }
             }
-        }
+        
         failure {
             script {
                 echo 'Sending notification for Terraform failure...'
