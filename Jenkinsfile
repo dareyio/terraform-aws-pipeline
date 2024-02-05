@@ -14,7 +14,6 @@ pipeline {
             }
         }
 
-        
         stage('Lint Code') {
             steps {
                 script {
@@ -44,8 +43,8 @@ pipeline {
             }
             steps {
                 script {
-        //             // Ask for manual confirmation before applying changes
-                    input message: 'Do you want to apply changes?', ok: Yes
+                    // Ask for manual confirmation before applying changes
+                    input message: 'Do you want to apply changes?', ok: 'Yes'
                     withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh 'terraform init'
                         echo 'Applying Terraform...'
@@ -54,29 +53,27 @@ pipeline {
                 }
             }
         }
-
+    }
 
     post {
-            failure {
-                script {
-                    echo 'Sending notification for Terraform failure...'
-                    // Add notification steps here, such as sending an email
-                }
-            }
-            always {
-                stage('Cleanup') {
-                    steps {
-                        script {
-                            echo 'Performing cleanup...'
-                            // Add cleanup commands here
-                        }
+        always {
+            stage('Cleanup') {
+                steps {
+                    script {
+                        echo 'Performing cleanup...'
+                        // Add cleanup commands here
                     }
                 }
             }
+        }
+        failure {
+            script {
+                echo 'Sending notification for Terraform failure...'
+                // Add notification steps here, such as sending an email
+            }
+        }
     }
 }
 
-}
-}
 
 
