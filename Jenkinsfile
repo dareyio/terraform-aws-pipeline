@@ -57,13 +57,7 @@ pipeline {
 
 
         post {
-        failure {
-            script {
-                echo 'Terraform Apply failed!'
-                // Add notification or logging of detailed error messages here
-                // For example, you can use the Email Extension plugin to send email notifications
-            }
-        }
+       
         always {
             stage('Cleanup') {
                 steps {
