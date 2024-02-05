@@ -64,15 +64,17 @@ pipeline {
             }
             echo 'Cleanup completed.'
 
-                }
-            }
-        
+        }
+
         failure {
             script {
                 echo 'Sending notification for Terraform failure...'
                 // Add notification steps here, such as sending an email
             }
         }
+        }
+        
+        
     }
 
 
