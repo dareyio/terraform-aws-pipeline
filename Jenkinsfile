@@ -3,7 +3,6 @@ def COLOR_MAP = [
     'SUCCESS' : 'good'
 ]
 
-
 pipeline {
     agent any
 
@@ -72,17 +71,20 @@ pipeline {
 
         }
 
-        always {
+        failure {
+            script {
                 echo 'Sending Slack notification for Terraform failure...'
                 slackSend (
                     channel: 'jenkins-build',
                     color: COLOR_MAP[currentBuild.currentResult],
-                    message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} \n build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+                    message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} \n build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD}"
 
                 )
             }
         }
-           
+        }
+        
+        
     }
 
 
