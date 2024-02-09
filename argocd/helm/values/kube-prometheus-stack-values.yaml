@@ -946,9 +946,9 @@ grafana:
           }
       custom-dashboard:
         # This is a path to a file inside the dashboards directory inside the chart directory
-        file: dashboards/custom-dashboard.json
+        file: dashboards/rabbitmq.json
       prometheus-stats:
-        # Ref: https://grafana.com/dashboards/2
+        Ref: https://grafana.com/dashboards/2
         gnetId: 2
         revision: 2
         datasource: Prometheus
@@ -1054,7 +1054,7 @@ grafana:
       defaultDatasourceEnabled: true
       isDefaultDatasource: true
 
-      uid: prometheusxxxxxxxx
+      uid: prometheus
 
       ## URL of prometheus datasource
       ##
