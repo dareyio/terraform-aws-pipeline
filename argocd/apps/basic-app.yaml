@@ -11,7 +11,7 @@ spec:
     targetRevision: HEAD
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: monitoring
+    namespace: nginx-app
   syncPolicy:
     automated:
       prune: true # This will delete resources that are no longer in the repository.
