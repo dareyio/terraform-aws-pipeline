@@ -8,10 +8,10 @@ spec:
   source:
     repoURL: 'git@github.com:dareyio/terraform-aws-pipeline.git'
     path: 'argocd/apps/nginx-app'
-    targetRevision: HEAD
+    targetRevision: feature/testingargo
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: monitoring
+    namespace: nginx-app
   syncPolicy:
     automated:
       prune: true # This will delete resources that are no longer in the repository.
