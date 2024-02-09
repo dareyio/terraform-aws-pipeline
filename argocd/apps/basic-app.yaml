@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://prometheus-community.github.io'
+    repoURL: 'git@github.com:dareyio/terraform-aws-pipeline.git'
     path: 'argocd/apps/nginx-app'
     targetRevision: HEAD
   destination:
