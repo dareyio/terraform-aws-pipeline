@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: basic-application
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://prometheus-community.github.io'
+    path: 'argocd/apps/nginx-app'
+    targetRevision: HEAD
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true # This will delete resources that are no longer in the repository.
+      selfHeal: true # This will automatically fix differences between the desired state in Git and the live state in the cluster.
