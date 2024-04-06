@@ -4,8 +4,8 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "faith-dev-terraform-bucket"
+    bucket = "terraform-cicd"
     key    = "global/s3/terraform.tfstate"
-    region = "us-east-1"
+    region = "eu-north-1"
   }
 }
