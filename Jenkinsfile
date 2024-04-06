@@ -184,7 +184,9 @@ pipeline {
         stage('Build') {
             steps {
                 // Use the main branch credentials
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'MAIN_BRANCH_CREDENTIALS', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+
+                  {
                     // Your build steps here
                 }
             }
