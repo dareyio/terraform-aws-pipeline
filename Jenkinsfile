@@ -132,7 +132,7 @@
                    // }
                   //  echo 'Terraform Plan executed successfully.'
              //   }
-            }
+           // }
         //}
    //stage('Terraform Plan') {
             //steps {
