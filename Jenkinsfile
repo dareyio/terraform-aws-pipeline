@@ -186,8 +186,40 @@ pipeline {
                 // Use the main branch credentials
                 withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
 
-                  {
-                    // Your build steps here
+                  
+                   // Your build steps here
+                }
+            }
+        }
+    }
+}
+
+pipeline {
+    agent any
+    
+    environment {
+        // Assign the AWS credentials to the environment variable
+        MAIN_BRANCH_CREDENTIALS = credentials('AWS_CRED')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Checkout the main branch from the Git repository
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/NANA-2016/terraform-aws-pipeline.git']]])
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Use the AWS credentials stored in the environment variable
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        // Your build steps here
+                        // You can access AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY variables here
+                    }
                 }
             }
         }
