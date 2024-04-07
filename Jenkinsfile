@@ -300,7 +300,7 @@ pipeline {
 
         stage('Error Handling') {
             when {
-                expression { currentBuild.result == 'FAILURE' }
+                expression { currentBuild.result == 'SUCCESS' }
             }
             steps {
                 echo 'Error occurred during pipeline execution. Handling...'
