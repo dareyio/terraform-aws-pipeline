@@ -246,8 +246,10 @@ pipeline {
             steps {
                 script {
                     echo 'Executing Terraform Lint...'
+                    withCredentials([aws(credentialsId: 'AWS_CRED', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh 'terraform init -input=false -no-color'
                     sh 'terraform validate'
+                    }
                     echo 'Terraform Lint executed successfully.'
                 }
             }
@@ -282,7 +284,8 @@ pipeline {
                             sh 'terraform apply tfplan -input=false -no-color'
                         }
                         echo 'Terraform Apply executed successfully.'
-                    } catch (Exception e) {
+                    }
+                     catch (Exception e) {
                         echo "An error occurred: ${e.message}"
                         currentBuild.result = 'FAILURE'
                     }
@@ -290,13 +293,7 @@ pipeline {
             }
         }
 
-        stage('Cleanup') {
-            steps {
-                echo 'Performing cleanup...'
-                // Add cleanup tasks here, if any
-                echo 'Cleanup completed.'
-            }
-        }
+        
 
         stage('Error Handling') {
             when {
@@ -308,5 +305,15 @@ pipeline {
                 echo 'Error handling completed.'
             }
         }
-    }
+
+         stage('Cleanup') {
+            steps {
+                echo 'Performing cleanup...'
+                // Add cleanup tasks here, if any
+                echo 'Cleanup completed.'
+            }
+        }
+    } 
 }
+
+       
