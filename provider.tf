@@ -1,11 +1,13 @@
 provider "aws" {
-  region = local.region
+  region = "us-east-2"
 }
+
+
 
 terraform {
   backend "s3" {
-    bucket = "cicd-class"
+    bucket = "busi-dev-terraform-bucket"
     key    = "terraform.tfstate"
-    region = "eu-west-2"
+    region = "us-east-1"
   }
 }
